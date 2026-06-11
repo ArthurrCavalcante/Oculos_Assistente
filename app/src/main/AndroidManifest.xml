@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Manifesto do aplicativo.
+
+    Permissões declaradas:
+    ─ BLUETOOTH / BLUETOOTH_ADMIN      → necessário para API ≤ 30 (Android 11-)
+    ─ BLUETOOTH_SCAN / BLUETOOTH_CONNECT → necessário para API ≥ 31 (Android 12+)
+    ─ ACCESS_FINE_LOCATION             → exigido pelo Android ≤ 11 para descoberta BT
+    ─ ACCESS_COARSE_LOCATION           → complementar ao fine location
+
+    O atributo android:usesPermissionFlags="neverForLocation" em BLUETOOTH_SCAN
+    informa ao sistema que o app não usa BT para inferir localização, o que
+    pode dispensar a permissão de localização em alguns dispositivos Android 12+.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ifs.oculosassistente">
+
+    <!-- ── Bluetooth Classic (SPP) ─────────────────────────────────────── -->
+    <!-- Android ≤ 11 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <!-- Android 12+ -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Localização — exigida para descoberta BT no Android ≤ 11 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Declara que o app usa hardware Bluetooth (não obrigatório em tablets sem BT) -->
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.OculosAssistente">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+            <!-- Landscape: melhor para visualizar o frame da câmera -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

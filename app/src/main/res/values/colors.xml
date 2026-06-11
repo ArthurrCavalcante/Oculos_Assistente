@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="preto">#FF000000</color>
+    <color name="branco">#FFFFFFFF</color>
+    <color name="verde_deteccao">#FF00FF00</color>
+    <color name="vermelho_alerta">#FFFF0000</color>
+    <color name="azul_primario">#FF2563EB</color>
+    <color name="cinza_fundo">#FF1E293B</color>
+</resources>

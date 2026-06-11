@@ -1,0 +1,56 @@
+// ============================================================
+// build.gradle — Módulo :app
+//
+// Dependências externas necessárias:
+//   • TensorFlow Lite (intérprete + suporte a GPU delegate opcional)
+//   • AppCompat (tema base para a Activity)
+// ============================================================
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.ifs.oculosassistente"
+        minSdk 24          // Android 7.0 — cobre > 95% dos dispositivos em uso
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Importante: impede que o Gradle comprima os arquivos .tflite em assets/
+    // (compressão quebraria o mapeamento direto em memória)
+    aaptOptions {
+        noCompress "tflite"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    // TensorFlow Lite — intérprete base
+    implementation 'org.tensorflow:tensorflow-lite:2.14.0'
+
+    // Suporte a aceleração de hardware (GPU/NNAPI) — opcional mas recomendado
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.14.0'
+
+    // AppCompat para o tema e ActivityCompat
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}

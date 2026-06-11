@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Óculos Assistente</string>
+    <string name="status_desconectado">Desconectado</string>
+    <string name="status_conectando">Conectando…</string>
+    <string name="status_conectado">Conectado!</string>
+    <string name="status_falha">Falha — dispositivo não encontrado</string>
+    <string name="status_encerrado">Conexão encerrada</string>
+    <string name="status_permissao_negada">Permissões negadas — Bluetooth não funcionará.</string>
+    <string name="pessoas_detectadas">Pessoas detectadas: %d</string>
+    <string name="btn_conectar">Conectar</string>
+    <string name="btn_desconectar">Desconectar</string>
+    <string name="desc_frame_camera">Frame da câmera com detecções de rosto</string>
+</resources>

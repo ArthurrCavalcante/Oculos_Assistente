@@ -1,0 +1,15 @@
+// =============================================================================
+// build.gradle (raiz) — Configuração de plugins do projeto OculosAssistente
+// =============================================================================
+// Este é o build.gradle do nível raiz. Ele declara os plugins utilizados
+// pelo projeto, mas NÃO os aplica aqui (apply false). Cada módulo
+// (ex.: :app) aplica os plugins que precisa no seu próprio build.gradle.
+// =============================================================================
+
+plugins {
+    // Plugin do Android Gradle (AGP) — necessário para compilar apps Android
+    id 'com.android.application' version '8.2.0' apply false
+
+    // Plugin do Kotlin para Android
+    id 'org.jetbrains.kotlin.android' version '1.9.20' apply false
+}
