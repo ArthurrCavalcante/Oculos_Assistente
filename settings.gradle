@@ -1,32 +1,16 @@
-// =============================================================================
-// settings.gradle — Configurações do projeto raiz OculosAssistente
-// =============================================================================
-// Este arquivo configura os repositórios de plugins e dependências,
-// define o nome do projeto raiz e inclui os módulos do projeto.
-// =============================================================================
-
 pluginManagement {
-    // Repositórios onde o Gradle procura os plugins declarados nos build.gradle
     repositories {
-        google()                // Repositório do Google (AGP, serviços do Google)
-        mavenCentral()          // Repositório Maven Central
-        gradlePluginPortal()    // Portal de plugins do Gradle
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
-
 dependencyResolutionManagement {
-    // FAIL_ON_PROJECT_REPOS garante que todos os repositórios sejam
-    // declarados aqui, e não nos build.gradle dos módulos individuais.
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-
     repositories {
-        google()                // Bibliotecas AndroidX, Material, etc.
-        mavenCentral()          // Bibliotecas de terceiros (TensorFlow Lite, etc.)
+        google()
+        mavenCentral()
     }
 }
-
-// Nome do projeto raiz
 rootProject.name = 'OculosAssistente'
-
-// Módulos incluídos no projeto
 include ':app'

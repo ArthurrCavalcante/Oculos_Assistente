@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Tema base do app — herda do DayNight para suporte a modo escuro -->
     <style name="Theme.OculosAssistente" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/azul_primario</item>
         <item name="android:windowBackground">@color/preto</item>

@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Layout principal do app.
-    Estrutura simples em coluna vertical:
-      1. Imagem do frame recebido (preenche a tela)
-      2. Texto de status da conexão BT
-      3. Texto com contagem de pessoas
-      4. Botão conectar/desconectar
--->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -14,8 +6,6 @@
     android:orientation="vertical"
     android:background="#000000"
     android:padding="8dp">
-
-    <!-- Frame recebido do ESP32, com anotações desenhadas pelo detector -->
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
@@ -23,8 +13,6 @@
         android:layout_weight="1"
         android:scaleType="fitCenter"
         android:contentDescription="Frame da câmera com detecções de rosto" />
-
-    <!-- Status da conexão Bluetooth -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"
@@ -33,8 +21,6 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:padding="4dp" />
-
-    <!-- Contagem de pessoas detectadas no frame atual -->
     <TextView
         android:id="@+id/tvPessoas"
         android:layout_width="match_parent"
@@ -43,13 +29,10 @@
         android:textColor="#00FF00"
         android:textSize="18sp"
         android:padding="4dp" />
-
-    <!-- Botão de controle da conexão -->
     <Button
         android:id="@+id/btnConectar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Conectar"
         android:layout_marginTop="4dp" />
-
 </LinearLayout>
