@@ -1,114 +1,58 @@
-# Óculos Assistente — App Android
+# Óculos Assistente para Deficientes Visuais 🕶️📷
 
-App Android complementar ao projeto de óculos assistivos para deficientes visuais
-desenvolvido no Instituto Iracema (IFCE). Substitui o script Python original,
-rodando inteiramente no celular via Bluetooth.
+> **Projeto de visão computacional embarcada desenvolvido para auxiliar pessoas com deficiência visual na detecção de obstáculos dinâmicos (pessoas) utilizando Inteligência Artificial offline.**
 
 ---
 
-## Estrutura do projeto
+## 🎯 Sobre o Projeto
 
-```
-app/src/main/
-├── java/com/ifs/oculosassistente/
-│   ├── MainActivity.kt      → UI, permissões, loop de captura
-│   ├── BluetoothHelper.kt   → Conexão BT e protocolo de foto com ESP32
-│   └── DetectorRostos.kt    → YOLOv8 TFLite + lógica dos 3 alertas
-├── res/layout/
-│   └── activity_main.xml    → Layout da tela principal
-└── AndroidManifest.xml      → Permissões Bluetooth
-```
+As soluções tradicionais de acessibilidade (como bengalas e cães-guia) funcionam bem para obstáculos estáticos, mas apresentam limitações com obstáculos dinâmicos, principalmente pessoas em movimento. 
 
-Apenas **3 arquivos Kotlin** — cada um com responsabilidade única e bem definida.
+Este projeto propõe um sistema **wearable (vestível) de baixo custo**, composto por uma **ESP32-CAM** e um **Smartphone Android**, capaz de detectar pessoas, estimar a distância e emitir alertas de voz em tempo real.
 
 ---
 
-## Pré-requisitos
+## 📸 Demonstração
 
-| Item | Detalhe |
-|------|---------|
-| Android Studio | Hedgehog (2023.1.1) ou mais recente |
-| SDK mínimo | Android 7.0 (API 24) |
-| Dispositivo | Bluetooth Classic obrigatório |
-| Modelo | `yolov8n-face.tflite` em `app/src/main/assets/` |
+*(Arraste e solte o GIF ou foto do aplicativo funcionando aqui)*
+
+*(Arraste e solte a foto da sua placa ESP32 aqui)*
 
 ---
 
-## Como obter o modelo .tflite
+## 🚀 Como Funciona a Arquitetura?
 
-O modelo YOLOv8n-face (de código aberto) precisa ser convertido para TFLite.
-Rode uma vez no computador:
+O sistema é dividido em quatro etapas principais, rodando de forma 100% offline:
 
-```bash
-pip install ultralytics
+1. **Captura (ESP32-CAM):** A câmera capta imagens via demanda e as comprime em formato JPEG.
+2. **Transmissão (Bluetooth SPP):** As imagens são enviadas da placa para o celular usando o protocolo Bluetooth Classic (Serial Port Profile).
+3. **Processamento (App Android + TFLite):** O celular atua como o cérebro do sistema. Ele processa a imagem usando uma rede neural **YOLOv8n-face**, identifica rostos e calcula a distância aproximada (erro constante de ~20cm).
+4. **Alerta por Voz (Text-to-Speech):** O aplicativo sintetiza a voz e informa o usuário diretamente pelo fone de ouvido.
 
-# Baixa o modelo .pt (mesmo do script Python original)
-# https://github.com/lindevs/yolov8-face
-# → yolov8n-face-lindevs.pt
-
-python - <<'EOF'
-from ultralytics import YOLO
-model = YOLO("yolov8n-face-lindevs.pt")
-model.export(format="tflite", imgsz=640, int8=False)
-# Gera: yolov8n-face-lindevs_float32.tflite
-EOF
-
-# Renomeie e copie para o projeto:
-cp yolov8n-face-lindevs_float32.tflite \
-   app/src/main/assets/yolov8n-face.tflite
-```
+### Tipos de Alerta 🔊
+O sistema possui 3 níveis lógicos de aviso:
+- **Aviso de Multidão:** Informa a quantidade de pessoas próximas.
+- **Aviso de Aproximação:** Alerta quando alguém está caminhando em direção ao usuário.
+- **Aviso de Parada:** Identifica quando uma pessoa está parada próxima ao usuário por vários segundos.
 
 ---
 
-## Pareamento Bluetooth
+## 🛠️ Tecnologias Utilizadas
 
-1. No ESP32, o nome do dispositivo BT deve ser exatamente **`Oculos-Inteligente-BT`**
-   (igual ao código Python original).
-2. Pare o dispositivo nas configurações de Bluetooth do Android antes de abrir o app.
-3. O app busca esse nome na lista de dispositivos já pareados — não faz varredura ativa.
-
----
-
-## Fluxo de funcionamento
-
-```
-ESP32 (câmera)
-    │  "FOTO\n"          ← BluetoothHelper envia
-    │  "SIZE:12345\n"    → BluetoothHelper lê tamanho
-    │  <bytes JPEG>      → BluetoothHelper lê frame
-    ▼
-DetectorRostos.processar(bitmap)
-    ├─ YOLOv8 TFLite → lista de rostos com confiança
-    ├─ Estima distância por cada rosto (fórmula focal)
-    ├─ Verifica alertas (Tipo 1 / 2 / 3)
-    │      └─ onAlerta("mensagem") → MainActivity.falar()
-    └─ Desenha anotações no bitmap
-    ▼
-MainActivity
-    ├─ imgView.setImageBitmap(bitmapAnotado)
-    ├─ tvPessoas.text = "Pessoas detectadas: N"
-    └─ TextToSpeech.speak("mensagem de alerta")
-```
+- **Linguagem Principal:** Kotlin (App Android) / C++ (ESP32)
+- **Inteligência Artificial:** TensorFlow Lite (YOLOv8n-face)
+- **Hardware:** TTGO T-Journal (ESP32 + Câmera OV2640)
+- **Comunicação:** Bluetooth Classic
 
 ---
 
-## Tipos de alerta (port do Python)
+## 🚀 Como Rodar o Projeto
 
-| Tipo | Condição | Mensagem |
-|------|----------|----------|
-| **1** | > 1 pessoa por ≥ 6 frames seguidos | "N pessoas detectadas ao redor." |
-| **2** | 1 pessoa no centro do frame, se aproximando por 6 frames | "Atenção, pessoa se aproximando." |
-| **3** | 1 pessoa parada a ≤ 2,5 m por 6 frames (distância estável) | "Pessoa parada detectada. Solicitando descrição." |
-
-Timers anti-spam: Tipo 1 = 15 s, Tipo 2 = 5 s, Tipo 3 = uma vez por ocorrência.
+1. Abra o projeto no **Android Studio**.
+2. Certifique-se de que sua placa ESP32-CAM esteja ligada e pareada com o Bluetooth do celular.
+3. Compile e instale o APK no smartphone.
+4. Conceda as permissões de Bluetooth e Localização.
+5. Clique em "Conectar" no aplicativo e o rastreamento começará automaticamente.
 
 ---
-
-## Próximos passos (integração futura)
-
-- **Tipo 3 + Gemini Vision:** o ponto de integração está marcado com o comentário
-  `// Ponto de integração futura com Gemini Vision` em `DetectorRostos.kt`.
-  Basta chamar a API multimodal do Gemini passando o bitmap do frame atual.
-
-- **GPU Delegate:** para melhorar a performance do TFLite, ative o `GpuDelegate`
-  no construtor do `Interpreter` em `DetectorRostos.kt`.
+*Desenvolvido pela equipe de Microprocessadores e Microcontroladores (IFCE).*
