@@ -14,10 +14,8 @@ Este projeto propõe um sistema **wearable (vestível) de baixo custo**, compost
 
 ## 📸 Demonstração
 
-<img width="400" height="1177" alt="WhatsApp Image 2026-07-01 at 22 57 58" src="https://github.com/user-attachments/assets/3d0508cf-1b52-4879-9d32-d08484378fc4" />
 <img src="https://github.com/user-attachments/assets/3d0508cf-1b52-4879-9d32-d08484378fc4" width="400">
 <img src="https://github.com/user-attachments/assets/eeb8f59c-872f-455f-ba7a-f1d07e1c0686" width="400">
-<img width="400" height="1599" alt="WhatsApp Image 2026-06-15 at 21 11 16" src="https://github.com/user-attachments/assets/eeb8f59c-872f-455f-ba7a-f1d07e1c0686" />
 
 ---
 
